@@ -1,7 +1,21 @@
-from autodistill.text_classification import TextClassificationOntology
-from autodistill_setfit import SetFitTrainer
+import os
+
 import requests
+from autodistill_gpt_text import GPTClassifier
+from autodistill_setfit import SetFitTrainer
 from bs4 import BeautifulSoup
+
+from autodistill.text_classification import TextClassificationOntology
+
+classifier = GPTClassifier(
+    ontology=TextClassificationOntology(
+        {
+            "computer vision": "computer vision",
+            "natural language processing": "natural language processing",
+        }
+    ),
+    api_key=os.environ.get("OPENAI_API_KEY"),
+)
 
 target_model = SetFitTrainer()
 
@@ -27,9 +41,11 @@ links = [title.find("a")["href"] for title in titlelines]
 
 titles_and_links = list(zip(titles, links))
 
-titles_and_links.append(["NeRF-Casting: Improved View-Dependent Appearance with Consistent Reflections", ""])
+titles_and_links.append(
+    ["NeRF-Casting: Improved View-Dependent Appearance with Consistent Reflections", ""]
+)
 
 for title, link in titles_and_links:
-  pred = trained_target_model.predict(title)
+    pred = trained_target_model.predict(title)
 
-  print(pred, "\t", title)
+    print(pred, "\t", title)
