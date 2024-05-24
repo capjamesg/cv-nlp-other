@@ -17,6 +17,8 @@ classifier = GPTClassifier(
     api_key=os.environ.get("OPENAI_API_KEY"),
 )
 
+classifier.label("records.jsonl")
+
 target_model = SetFitTrainer()
 
 # train a model
